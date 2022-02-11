@@ -12,6 +12,7 @@
   height: 400px;
   margin: 50px auto;
   position: relative;
+  /*현재 슬라이드를 제외한 다른 슬라이드 가리는 역할*/
   overflow: hidden;
 }
 /* ! */
@@ -19,10 +20,10 @@
   width: 8000px;
   height: 100%;
   position: absolute;
+  display: flex;
 }
 /* ! */
 .slider-wrap ul.slider li {
-  float: left;
   width: 1000px;
   height: 400px;
 }
