@@ -66,7 +66,7 @@ export default class ImageSlider {
     );
   }
 
-  onClickMove() {
+  onClickMoveTo() {
     if (this.#intervalId && this.#autoplay) {
       clearInterval(this.#intervalId);
       this.initAutoPlay();
@@ -84,7 +84,7 @@ export default class ImageSlider {
       this.#slideWidth * this.#currentPosition
     }px`;
 
-    this.onClickMove();
+    this.onClickMoveTo();
     this.setIndicator();
   }
 
@@ -99,7 +99,7 @@ export default class ImageSlider {
       this.#slideWidth * this.#currentPosition
     }px`;
 
-    this.onClickMove();
+    this.onClickMoveTo();
     this.setIndicator();
   }
 
