@@ -15,14 +15,19 @@ export default class ImageSlider {
 
   indicatorWrapEl;
 
+  #intervalId;
+
+  #autoplay = true;
+
   constructor() {
     this.assignElement();
     this.initSliderNumber();
     this.initSlideWidth();
     this.initSliderListWidth();
-    this.addEvent();
     this.createIndicator();
     this.setIndicator();
+    this.initAutoPlay();
+    this.setAddEventListener();
   }
 
   assignElement() {
@@ -31,6 +36,7 @@ export default class ImageSlider {
     this.nextBtnEl = this.sliderWrapEl.querySelector('#next');
     this.prevBtnEl = this.sliderWrapEl.querySelector('#previous');
     this.indicatorWrapEl = this.sliderWrapEl.querySelector('#indicator-wrap');
+    this.controlWrapEl = this.sliderWrapEl.querySelector('#control-wrap');
   }
 
   initSliderNumber() {
@@ -47,13 +53,24 @@ export default class ImageSlider {
     }px`;
   }
 
-  addEvent() {
+  setAddEventListener() {
     this.nextBtnEl.addEventListener('click', this.moveToRight.bind(this));
     this.prevBtnEl.addEventListener('click', this.moveToLeft.bind(this));
     this.indicatorWrapEl.addEventListener(
       'click',
       this.onClickIndicator.bind(this),
     );
+    this.controlWrapEl.addEventListener(
+      'click',
+      this.toggleAutoplay.bind(this),
+    );
+  }
+
+  onClickMove() {
+    if (this.#intervalId && this.#autoplay) {
+      clearInterval(this.#intervalId);
+      this.initAutoPlay();
+    }
   }
 
   moveToRight() {
@@ -67,6 +84,7 @@ export default class ImageSlider {
       this.#slideWidth * this.#currentPosition
     }px`;
 
+    this.onClickMove();
     this.setIndicator();
   }
 
@@ -81,6 +99,7 @@ export default class ImageSlider {
       this.#slideWidth * this.#currentPosition
     }px`;
 
+    this.onClickMove();
     this.setIndicator();
   }
 
@@ -117,6 +136,22 @@ export default class ImageSlider {
       }px`;
 
       this.setIndicator();
+    }
+  }
+
+  initAutoPlay() {
+    this.#intervalId = setInterval(this.moveToRight.bind(this), 3000);
+  }
+
+  toggleAutoplay(event) {
+    if (event.target.dataset.status === 'play') {
+      this.#autoplay = true;
+      this.controlWrapEl.classList.replace('pause', 'play');
+      this.initAutoPlay();
+    } else if (event.target.dataset.status === 'pause') {
+      this.#autoplay = false;
+      this.controlWrapEl.classList.replace('play', 'pause');
+      clearInterval(this.#intervalId);
     }
   }
 }
